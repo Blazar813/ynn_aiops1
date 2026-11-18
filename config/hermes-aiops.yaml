@@ -1,0 +1,23 @@
+# Merge this block into %LOCALAPPDATA%\hermes\config.yaml if you want to
+# manage the server from Hermes itself. Start-AIOps.ps1 uses this file through
+# HERMES_HOME so the project is isolated from a personal Hermes profile.
+mcp_servers:
+  aiops:
+    command: "python"
+    args:
+      - "-m"
+      - "src.aiops_mcp_server"
+    env:
+      PYTHONPATH: "${AIOPS_PROJECT_ROOT}"
+      AIOPS_ALLOW_MUTATIONS: "${AIOPS_ALLOW_MUTATIONS:-false}"
+      AIOPS_APPROVAL_TOKEN: "${AIOPS_APPROVAL_TOKEN:-}"
+    timeout: 120
+    connect_timeout: 30
+    tools:
+      include:
+        - get_incident_context
+        - search_logs
+        - get_service_health
+        - execute_remediation
+      resources: false
+      prompts: false
